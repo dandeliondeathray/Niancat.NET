@@ -1,0 +1,8 @@
+packages
+.paket
+.projekt
+.fake
+build
+bin
+obj
+tests
