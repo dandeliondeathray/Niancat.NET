@@ -1,4 +1,5 @@
 packages
+.vscode
 .paket
 .projekt
 .fake
