@@ -1,4 +1,4 @@
-namespace Niancat.Api.AssemblyInfo
+namespace Niancat.Utilities.AssemblyInfo
 
 open System.Reflection
 open System.Runtime.CompilerServices
@@ -7,11 +7,11 @@ open System.Runtime.InteropServices
 (* General Information about an assembly is controlled through the following 
 set of attributes. Change these attribute values to modify the information
 associated with an assembly. *)
-[<assembly: AssemblyTitle("Niancat.Api")>]
+[<assembly: AssemblyTitle("Niancat.Utilities")>]
 [<assembly: AssemblyDescription("")>]
 [<assembly: AssemblyConfiguration("")>]
 [<assembly: AssemblyCompany("MyOrg")>]
-[<assembly: AssemblyProduct("Niancat.Api")>]
+[<assembly: AssemblyProduct("Niancat.Utilities")>]
 [<assembly: AssemblyCopyright("Copyright © MyOrg 2017")>]
 [<assembly: AssemblyTrademark("")>]
 [<assembly: AssemblyCulture("")>]
@@ -22,7 +22,7 @@ COM, set the ComVisible attribute to true on that type. *)
 [<assembly: ComVisible(false)>]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[<assembly: Guid("bc340dee-29a5-4535-870e-274c4175ff40")>]
+[<assembly: Guid("1a200242-97de-434a-8ff4-ffb9149566b6")>]
 
 (* Version information for an assembly consists of the following four values:
 

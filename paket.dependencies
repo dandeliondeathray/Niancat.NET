@@ -1,9 +1,17 @@
 source https://www.nuget.org/api/v2
+
 # build dependencies
 nuget Fake
 nuget xUnit.Runner.Console
 
 # test dependencies
+nuget Xunit 2.1.0
 nuget FsCheck
-nuget xUnit.Assert 2.1.0
-nuget xUnit.Core 2.1.0
+nuget FsCheck.Xunit
+nuget Unquote
+
+# implementation dependencies
+nuget Suave
+nuget Suave.Swagger
+
+nuget Newtonsoft.Json

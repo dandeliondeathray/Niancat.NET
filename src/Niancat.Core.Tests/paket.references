@@ -1,3 +1,4 @@
-xUnit.Core
-xUnit.Assert
+Xunit
 FsCheck
+FsCheck.Xunit
+Unquote
