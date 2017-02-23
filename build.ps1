@@ -9,7 +9,7 @@ if ($LASTEXITCODE -ne 0) {
     exit 2
 }
 
-packages/FAKE/tools/FAKE.exe @0 --fsiargs build.fsx
+packages/FAKE/tools/FAKE.exe --fsiargs build.fsx
 if ($LASTEXITCODE -ne 0) {
     exit 3
 }

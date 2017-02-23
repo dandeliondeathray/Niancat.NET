@@ -11,6 +11,10 @@ let paths = {
   xunit = "packages/xunit.runner.console/tools/xunit.console.exe"
 }
 
+MSBuildDefaults <- {
+  MSBuildDefaults with Verbosity = Some Quiet
+}
+
 Target "Clean" <| fun _ ->
   CleanDir paths.build
   CleanDir paths.tests
@@ -18,14 +22,14 @@ Target "Clean" <| fun _ ->
 
 Target "BuildApp" <| fun _ ->
     !! "src/**/*.fsproj"
-        -- "src/**/*.Tests.fsproj"
-        |> MSBuildRelease paths.build "Build"
-        |> Log "AppBuild-Output: "
+      -- "src/**/*.Tests.fsproj"
+      |> MSBuildRelease paths.build "Build"
+      |> ignore
 
 Target "BuildTests" <| fun _ ->
     !! "src/**/*.Tests.fsproj"
     |> MSBuildRelease paths.tests "Build"
-    |> Log "BuildTests-Output: "
+    |> ignore
 
 Target "RunUnitTests" <| fun _ ->
     !! (paths.tests + "/*.Tests.dll")
