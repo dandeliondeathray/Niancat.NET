@@ -18,6 +18,7 @@ module Solution =
         Seq.groupBy key
         >> Seq.map (fun (key, words) -> key, List.ofSeq words)
         >> Map.ofSeq
+
     let isWord wordlist word =
         match Map.tryFind (key word) wordlist with
         | Some words -> List.exists (fun w -> w = word) words
@@ -39,16 +40,15 @@ module CommandHandler =
         then AlreadySet
         else NewProblemSet { letters = newLetters; user = user }
 
-    let private initialize wordlist = AppInitiated wordlist
+    let private initialize wordlist = Started wordlist
 
     let private solve wordlist letters guess user =
         if key guess = key letters && isWord wordlist guess
         then Solved { user = user; hash = Solution.hash guess user }
         else IncorrectGuess
 
-    let apply state command user =
+    let apply state user command =
         match state, command with
-        | Initial, Initialize wordlist -> initialize wordlist
         | Started _, SetProblem letters -> setProblem "" letters user
         | Set
             {
@@ -85,5 +85,4 @@ module EventHandler =
         
 
     let apply state = function
-        | AppInitiated wordlist -> Started wordlist
         | _ -> state

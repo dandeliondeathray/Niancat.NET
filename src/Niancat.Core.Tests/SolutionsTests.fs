@@ -35,7 +35,7 @@ module SolutionsTests =
     [<Fact>]
     let ``Solution.hash uses the correct algorithm`` () =
         let expected = "2831cdcd01d9dce3bc39652bd3ed73bfd901e97341245b06a8a33ce3c45d345c" // echo -n FOOBARBAZtlycken | sha256sum
-        hash "FOOBARBAZ" "Tlycken" =! expected
+        hash "fooBarBaz" "Tlycken" =! expected
 
     [<Property>]
     let ``No word is valid with an empty wordlist`` (input : NonNull<Word>) =

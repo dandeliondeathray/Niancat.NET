@@ -12,6 +12,7 @@ module String =
 
     let sortChars = asChars >> Seq.sort >> System.String.Concat
 
+    let isEmpty s = System.String.IsNullOrEmpty(s)
 
     let private sha256hasher = new System.Security.Cryptography.SHA256Managed()
 

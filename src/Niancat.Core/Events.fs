@@ -15,7 +15,6 @@ module Events =
     }
 
     type DomainEvent =
-    | AppInitiated of Wordlist
     | Solved of SolvedData
     | NewProblemSet of NewProblemData
     | IncorrectGuess

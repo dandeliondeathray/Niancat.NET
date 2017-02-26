@@ -17,6 +17,5 @@ module States =
     }
 
     type ApplicationState =
-    | Initial
     | Started of Types.Wordlist
     | Set of SetData
