@@ -49,6 +49,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="SeqTakeUpToTests.fs" />
     <Compile Include="SeqInChunksOfTests.fs" />
+    <Compile Include="ErrorsTests.fs" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
