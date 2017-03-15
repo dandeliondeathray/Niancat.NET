@@ -3,6 +3,7 @@ module Niancat.Persistence.Queries
 open ReadModels
 open Niancat.Core.Domain
 open Niancat.Core.States
+open Niancat.Utilities.Errors
 
 type ProblemQueries = {
     getCurrent : unit -> Async<Word option>

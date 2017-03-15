@@ -8,14 +8,14 @@ open Suave.RequestErrors
 open Suave.Writers
 
 open Niancat.Api.CommandApi
+open Niancat.Api.QueryApi
+open Niancat.Api.JsonFormatters
 open Niancat.Api.CommandHandlers
 open Niancat.Persistence.Queries
 open Niancat.Persistence.InMemory.EventStore
 
 open Niancat.Utilities
 open Niancat.Utilities.Errors
-
-let private json v = Json.serialize v |> OK >=> setMimeType "application/json"
 
 let commandApiHandler eventStore eventsStream (context : HttpContext) = async {
     let payload = System.Text.Encoding.UTF8.GetString context.request.rawForm
@@ -24,10 +24,16 @@ let commandApiHandler eventStore eventsStream (context : HttpContext) = async {
 
     match response with
     | Success (state, events) ->
-        return! json events context
+        return! OK "" context
     | Failure err -> 
         return! BAD_REQUEST err.Message context
 }
+
+let queryApiHandler queries =
+    GET
+    >=> choose [
+        path "/problem" >=> handleQueryRequest queries.problem.getCurrent problemAsJson
+    ]
 
 let niancat eventStore eventsStream =
     choose [
@@ -39,5 +45,6 @@ let niancat eventStore eventsStream =
             POST >=> commandApiHandler eventStore eventsStream
             METHOD_NOT_ALLOWED ""
         ]
+        GET >=> queryApiHandler inMemoryQueries
         NOT_FOUND ""
     ]

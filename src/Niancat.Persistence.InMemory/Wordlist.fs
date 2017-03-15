@@ -6,6 +6,8 @@ open Niancat.Persistence.Queries
 
 open Niancat.Core.Domain
 
+open Niancat.Utilities.Errors
+
 let mutable private wordlist : Wordlist option = None
 
 let getWordlist () = wordlist |> async.Return

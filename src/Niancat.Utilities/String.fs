@@ -4,7 +4,7 @@ module String =
 
     open System.Text.RegularExpressions
 
-    let asChars (s : string) = s.ToCharArray()
+    let asChars (s : string) = s.ToCharArray() |> List.ofArray
 
     let ofChars (cs : char seq) = String.collect (sprintf "%c") ""
 

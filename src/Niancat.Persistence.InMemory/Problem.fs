@@ -5,6 +5,8 @@ open Niancat.Persistence.Projections
 open Niancat.Persistence.Queries
 
 open Niancat.Core.Domain
+open Niancat.Core.Errors
+open Niancat.Utilities.Errors
 
 let mutable private currentProblem : Word option = None
 
