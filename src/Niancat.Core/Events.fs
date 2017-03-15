@@ -1,22 +1,8 @@
-namespace Niancat.Core
+module Niancat.Core.Events
 
-open Types
+open Niancat.Core.Domain
 
-module Events =
-
-    type SolvedData = {
-        user : User
-        hash : Hash
-    }
-
-    type NewProblemData = {
-        user : User
-        letters : string
-    }
-
-    type DomainEvent =
-    | Solved of SolvedData
-    | NewProblemSet of NewProblemData
-    | IncorrectGuess
-    | AlreadySet
-    | InvalidCommand
+type Event =
+| Initialized of Wordlist
+| ProblemSet of User * Word
+| Solved of User * Hash

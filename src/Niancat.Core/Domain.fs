@@ -1,88 +1,41 @@
-namespace Niancat.Core
+module Niancat.Core.Domain
+
+type Word = Word of string
+
+type Key = Key of string
+
+type User = User of string
+
+type Hash = Hash of string
+
+type Wordlist = Map<Key, Word list>
 
 open Niancat.Utilities
 
-module Solution =
+let normalize =
+    String.removeControlChars
+    >> (String.replace "é|è|É|È" "E")
+    >> (String.remove "[^A-Za-zÅÄÖåäö]")
+    >> String.toUpper
 
-    open Types
+let key (Word w) = w |> normalize |> String.sortChars |> Key
 
-    let normalize =
-        String.removeControlChars
-        >> String.replace "é|è|É|È" "E"
-        >> String.remove "[^A-Za-zÅÄÖåäö]"
-        >> String.toUpper
+let wordlist : string list -> Wordlist =
+    Seq.map Word
+    >> Seq.groupBy key
+    >> Seq.map (fun (k, w) -> k, List.ofSeq w)
+    >> Map.ofSeq
 
-    let key = normalize >> String.sortChars
+let isWord (wordlist : Wordlist) word =
+    match Map.tryFind (key word) wordlist with
+    | Some words -> List.exists (fun w -> w = word) words
+    | None -> false
 
-    let wordlist : string list -> Wordlist =
-        Seq.groupBy key
-        >> Seq.map (fun (key, words) -> key, List.ofSeq words)
-        >> Map.ofSeq
+let hash (Word guess) (User user) =
+    sprintf "%s%s" (guess.ToUpper()) (user.ToLower()) |> String.sha256 |> Hash
 
-    let isWord wordlist word =
-        match Map.tryFind (key word) wordlist with
-        | Some words -> List.exists (fun w -> w = word) words
-        | None -> false
-
-    let hash (guess : Word) (user : User) =
-        sprintf "%s%s" (guess.ToUpper()) (user.ToLower()) |> String.sha256
-
-module CommandHandler = 
-
-    open Commands
-    open Events
-    open Solution
-    open States
-    open Types
-
-    let private setProblem letters newLetters user =
-        if key letters = key newLetters
-        then AlreadySet
-        else NewProblemSet { letters = newLetters; user = user }
-
-    let private initialize wordlist = Started wordlist
-
-    let private solve wordlist letters guess user =
-        if key guess = key letters && isWord wordlist guess
-        then Solved { user = user; hash = Solution.hash guess user }
-        else IncorrectGuess
-
-    let apply state user command =
-        match state, command with
-        | Started _, SetProblem letters -> setProblem "" letters user
-        | Set
-            {
-                wordlist = wordlist
-                problem = { letters = letters; solvers = _; date = _ }
-                previous = _
-            }, SetProblem newLetters -> setProblem letters newLetters user
-        | Set
-            {
-                wordlist = wordlist
-                problem = { letters = letters; solvers = _; date = _ }
-                previous = _
-            },
-            Solve guess -> solve wordlist letters guess user
-        | _ -> InvalidCommand
-
-module EventHandler =
-
-    open Events
-    open States
-
-    let private setFirstProblem wordlist letters =
-        let problem = {
-            letters = letters
-            solvers = []
-            date = System.DateTime.Today
-        }
-        
-        Set {
-            problem = problem
-            wordlist = wordlist
-            previous = []
-        }
-        
-
-    let apply state = function
-        | _ -> state
+let prettyProblem (Word word) =
+    if String.length word = 9
+    then
+        word |> String.asChars |> Seq.inChunksOf 3 |> Seq.map String.ofChars |> String.concat " "
+    else word

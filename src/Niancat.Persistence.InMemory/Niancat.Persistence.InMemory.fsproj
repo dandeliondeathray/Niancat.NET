@@ -5,10 +5,10 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>019e7376-a52c-45a2-8485-08aa715bf59c</ProjectGuid>
+    <ProjectGuid>033b24d1-15d5-487d-b7bc-7ca97c9b6840</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Niancat.Persistence</RootNamespace>
-    <AssemblyName>Niancat.Persistence</AssemblyName>
+    <RootNamespace>Niancat.Persistence.InMemory</RootNamespace>
+    <AssemblyName>Niancat.Persistence.InMemory</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFSharpCoreVersion>4.3.1.0</TargetFSharpCoreVersion>
   </PropertyGroup>
@@ -20,7 +20,7 @@
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Debug\Niancat.Persistence.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Niancat.Persistence.InMemory.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,7 +29,7 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <WarningLevel>3</WarningLevel>
-    <DocumentationFile>bin\Release\Niancat.Persistence.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Niancat.Persistence.InMemory.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
@@ -39,22 +39,21 @@
     <Reference Include="System.Numerics" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="../Niancat.Persistence/Niancat.Persistence.fsproj">
+      <Name>Niancat.Utilities</Name>
+      <Project>{019e7376-a52c-45a2-8485-08aa715bf59c}</Project>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="../Niancat.Core/Niancat.Core.fsproj">
       <Name>Niancat.Utilities</Name>
       <Project>{e20780c8-9665-4139-b8dc-af0e91fbb5ff}</Project>
       <Private>True</Private>
     </ProjectReference>
-    <ProjectReference Include="../Niancat.Utilities/Niancat.Utilities.fsproj">
-      <Name>Niancat.Utilities</Name>
-      <Project>{1a200242-97de-434a-8ff4-ffb9149566b6}</Project>
-      <Private>True</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="ReadModels.fs" />
-    <Compile Include="Projections.fs" />
-    <Compile Include="Queries.fs" />
+    <Compile Include="Problem.fs" />
+    <Compile Include="Wordlist.fs" />
     <Compile Include="EventStore.fs" />
   </ItemGroup>
   <PropertyGroup>

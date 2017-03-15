@@ -6,23 +6,30 @@ open Niancat.Persistence
 open Niancat.Core
 open Niancat.Core.Events
 open Niancat.Utilities
+open Niancat.Utilities.Errors
 
-let runServer wordlistFile eventsFile = async {
-    let db = Db.onFile wordlistFile eventsFile
-    let! app = Application.start db
-    startWebServer defaultConfig (WebParts.niancat app)
+open Niancat.Persistence.InMemory.EventStore
+open Niancat.Api.CommandHandlers
+open Niancat.Api.Commanders.Initialize
+
+let startServer wordlistFile = async {
+    let eventStore = inMemoryEventStore ()
+
+    let! initialized = handleCommand eventStore wordlistFile initializeCommander
+    match initialized with
+    | Success (state, events) ->
+        startWebServer defaultConfig (WebParts.niancat eventStore)
+    | Failure err ->
+        printfn "%s" err.Message
 }
 
 [<EntryPoint>]
 let main argv =
 
-    let task =
-        match List.ofArray argv with
-        | wordlistFile :: eventsFile :: _ -> runServer wordlistFile eventsFile
-        | _ -> async {
-            printfn "Usage: Niancat.Api.exe path-to-saol.txt path-to-events.txt"
-        }
-    
-    Async.RunSynchronously task
+    match List.ofArray argv with
+    | [wordlistFile] ->
+        startServer wordlistFile |> Async.RunSynchronously
+    | _ ->
+        printfn "Usage: Niancat.Api.exe path-to-saol.txt"
 
-    0 // return an integer exit code
+    0

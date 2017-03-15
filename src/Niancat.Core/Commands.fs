@@ -1,11 +1,8 @@
-namespace Niancat.Core
+module Niancat.Core.Commands
 
-module Commands =
+open Domain
 
-    open Types
-
-    type Command =
-    | Initialize of Wordlist
-    | SetProblem of Word
-    | Solve of Word
-
+type Command =
+| Initialize of Wordlist
+| SetProblem of Word * User
+| Guess of Word * User

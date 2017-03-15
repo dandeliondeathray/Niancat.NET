@@ -47,12 +47,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
-    <Compile Include="Types.fs" />
+    <Compile Include="Domain.fs" />
     <Compile Include="Events.fs" />
+    <Compile Include="Errors.fs" />
     <Compile Include="Commands.fs" />
     <Compile Include="States.fs" />
-    <Compile Include="Domain.fs" />
-    <Compile Include="Application.fs" />
+    <Compile Include="CommandHandlers.fs" />
   </ItemGroup>
   <PropertyGroup>
     <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>

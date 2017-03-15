@@ -15,3 +15,6 @@ nuget Suave
 nuget Suave.Swagger
 
 nuget Newtonsoft.Json
+nuget NEventStore
+
+nuget FSharp.Data
