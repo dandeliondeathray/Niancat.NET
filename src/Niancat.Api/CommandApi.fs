@@ -5,6 +5,6 @@ open Niancat.Api.Commanders.SetProblem
 
 open Niancat.Utilities.Errors
 
-let handleCommandRequest eventStore = function
-    | SetProblemRequest problem -> handleCommand eventStore problem setProblemCommander
+let handleCommandRequest eventStore eventsStream = function
+    | SetProblemRequest problem -> handleCommand eventStore eventsStream problem setProblemCommander
     | _ -> err "Invalid command" |> fail |> async.Return

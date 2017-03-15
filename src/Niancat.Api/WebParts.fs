@@ -17,10 +17,10 @@ open Niancat.Utilities.Errors
 
 let private json v = Json.serialize v |> OK >=> setMimeType "application/json"
 
-let commandApiHandler eventStore (context : HttpContext) = async {
+let commandApiHandler eventStore eventsStream (context : HttpContext) = async {
     let payload = System.Text.Encoding.UTF8.GetString context.request.rawForm
 
-    let! response = handleCommandRequest eventStore payload
+    let! response = handleCommandRequest eventStore eventsStream payload
 
     match response with
     | Success (state, events) ->
@@ -29,14 +29,14 @@ let commandApiHandler eventStore (context : HttpContext) = async {
         return! BAD_REQUEST err.Message context
 }
 
-let niancat eventStore =
+let niancat eventStore eventsStream =
     choose [
         path "/" >=> choose [
             GET >=> OK "hello, world!"
             METHOD_NOT_ALLOWED ""
         ]
         path "/command" >=> choose [
-            POST >=> commandApiHandler eventStore
+            POST >=> commandApiHandler eventStore eventsStream
             METHOD_NOT_ALLOWED ""
         ]
         NOT_FOUND ""

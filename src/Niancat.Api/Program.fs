@@ -8,17 +8,29 @@ open Niancat.Core.Events
 open Niancat.Utilities
 open Niancat.Utilities.Errors
 
+open Niancat.Persistence.Projections
 open Niancat.Persistence.InMemory.EventStore
 open Niancat.Api.CommandHandlers
 open Niancat.Api.Commanders.Initialize
 
+open Events
+
+let project event =
+    projectReadModel inMemoryActions event
+    |> Async.RunSynchronously |> ignore
+
+let projectEvents = List.iter project
+
 let startServer wordlistFile = async {
     let eventStore = inMemoryEventStore ()
+    let eventsStream = new Control.Event<Event list>()
 
-    let! initialized = handleCommand eventStore wordlistFile initializeCommander
+    eventsStream.Publish.Add projectEvents
+
+    let! initialized = handleCommand eventStore eventsStream wordlistFile initializeCommander
     match initialized with
     | Success (state, events) ->
-        startWebServer defaultConfig (WebParts.niancat eventStore)
+        startWebServer defaultConfig (WebParts.niancat eventStore eventsStream)
     | Failure err ->
         printfn "%s" err.Message
 }
