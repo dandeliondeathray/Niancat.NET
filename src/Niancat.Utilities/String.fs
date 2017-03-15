@@ -6,6 +6,8 @@ module String =
 
     let asChars (s : string) = s.ToCharArray()
 
+    let ofChars (cs : char seq) = String.collect (sprintf "%c") ""
+
     let toUpper (s : string) = s.ToUpper()
 
     let trim (s : string) = s.Trim()
