@@ -2,13 +2,13 @@ source https://www.nuget.org/api/v2
 
 # build dependencies
 nuget Fake
-nuget xUnit.Runner.Console
 
 # test dependencies
 nuget Xunit 2.1.0
 nuget FsCheck
 nuget FsCheck.Xunit
 nuget Unquote
+nuget xUnit.Runner.Console
 
 # implementation dependencies
 nuget Suave
