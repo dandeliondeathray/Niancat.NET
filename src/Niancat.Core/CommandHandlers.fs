@@ -12,8 +12,13 @@ let handleInitialize wordlist = function
     | TabulaRasa -> ok [Initialized wordlist]
     | _ -> fail AlreadyInitialized
 
+let isValid wordlist (Problem problem) =
+    normalize problem |> String.length = 9
+    &&
+    Map.containsKey (key (P (Problem problem))) wordlist
+
 let setIfValid wordlist problem user =
-    if Map.containsKey (key (P problem)) wordlist
+    if isValid wordlist problem
     then ok [ProblemSet (user, problem)]
     else InvalidProblem problem |> fail
 
