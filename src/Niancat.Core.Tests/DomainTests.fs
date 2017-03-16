@@ -41,7 +41,7 @@ module DomainTests =
     [<Fact>]
     let ``Solution.hash uses the correct algorithm`` () =
         let expected = Hash "2831cdcd01d9dce3bc39652bd3ed73bfd901e97341245b06a8a33ce3c45d345c" // echo -n FOOBARBAZtlycken | sha256sum
-        hash (Word "fooBarBaz") (User "Tlycken") =! expected
+        hash (Guess "fooBarBaz") (User "Tlycken") =! expected
 
     [<Property(Arbitrary=[|typeof<NonNullDomainStrings>|])>]
     let ``No word is valid with an empty wordlist`` word =
@@ -56,4 +56,4 @@ module DomainTests =
     let ``Words in wordlist are words`` word shouldMatch =
         let wordlist = wordlist ["foo"; "bar"; "foobar"]
 
-        isWord wordlist (Word word) =! shouldMatch
+        isWord wordlist (Guess word) =! shouldMatch

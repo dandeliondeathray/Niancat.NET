@@ -4,7 +4,7 @@ open Niancat.Core.Events
 open Niancat.Core.Domain
 
 type ProblemActions = {
-    setProblem : Word -> Async<unit>
+    setProblem : Problem -> Async<unit>
 }
 
 type WordlistActions = {

@@ -31,7 +31,7 @@ let validateSetProblem (problem, user) = async {
         | p, u -> Choice1Of2 (p, u)
 }
 
-let toCommand (problem, user) = SetProblem (Word problem, User user)
+let toCommand (problem, user) = SetProblem (Problem problem, User user)
 
 let setProblemCommander = {
     validate = validateSetProblem

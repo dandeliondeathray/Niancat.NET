@@ -4,5 +4,5 @@ open Niancat.Core.Domain
 
 type Event =
 | Initialized of Wordlist
-| ProblemSet of User * Word
+| ProblemSet of User * Problem
 | Solved of User * Hash

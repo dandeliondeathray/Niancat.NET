@@ -4,5 +4,5 @@ open Domain
 
 type Command =
 | Initialize of Wordlist
-| SetProblem of Word * User
-| Guess of Word * User
+| SetProblem of Problem * User
+| Guess of Guess * User

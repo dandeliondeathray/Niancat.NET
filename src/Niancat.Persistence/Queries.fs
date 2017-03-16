@@ -6,7 +6,7 @@ open Niancat.Core.States
 open Niancat.Utilities.Errors
 
 type ProblemQueries = {
-    getCurrent : unit -> Async<Word option>
+    getCurrent : unit -> Async<Problem option>
 }
 
 type WordlistQueries = {

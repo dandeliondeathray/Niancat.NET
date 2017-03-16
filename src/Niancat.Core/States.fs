@@ -4,7 +4,7 @@ open Domain
 open Events
 
 type ProblemData = {
-    letters : Word
+    letters : Problem
     solvers : User list
     date : System.DateTime
 }

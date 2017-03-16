@@ -5,6 +5,12 @@ open Niancat.Core.Domain
 
 type NonNullDomainStrings =
 
+    static member Problem () =
+        Arb.Default.Derive () |> Arb.filter (function Problem null -> false | _ -> true)
+
+    static member Guess () =
+        Arb.Default.Derive () |> Arb.filter (function Guess null -> false | _ -> true)
+
     static member Word () =
         Arb.Default.Derive () |> Arb.filter (function Word null -> false | _ -> true)
     

@@ -8,7 +8,7 @@ open Niancat.Core.Domain
 open Niancat.Core.Errors
 open Niancat.Utilities.Errors
 
-let mutable private currentProblem : Word option = None
+let mutable private currentProblem : Problem option = None
 
 let getCurrentProblem () = currentProblem |> async.Return
 
