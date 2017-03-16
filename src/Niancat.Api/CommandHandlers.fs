@@ -11,7 +11,7 @@ open Niancat.Core.Errors
 open Niancat.Utilities.Errors
 
 type Commander<'a, 'b> = {
-    validate : 'a -> Async<Choice<'b, string>>
+    validate : 'a -> Async<Result<'b, string>>
     toCommand : 'b -> Command
 }
 
@@ -35,8 +35,8 @@ let handleCommand eventStore eventsStream commandData commander = async {
     let! validationResult = commander.validate commandData
     
     match validationResult with
-    | Choice1Of2 validatedCommandData ->
+    | Success validatedCommandData ->
         return! _handle eventStore eventsStream validatedCommandData commander
-    | Choice2Of2 errorMessage ->
+    | Failure errorMessage ->
         return errorMessage |> err |> fail
 }

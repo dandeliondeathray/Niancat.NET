@@ -6,6 +6,7 @@ open System.IO
 
 open Niancat.Api.CommandHandlers
 open Niancat.Core.Commands
+open Niancat.Utilities.Errors
 
 let validate wordlistFile = async {
     if File.Exists wordlistFile
@@ -15,9 +16,9 @@ let validate wordlistFile = async {
 
         let text = System.Text.Encoding.UTF8.GetString contents
 
-        return Choice1Of2 text
+        return ok text
     else
-        return Choice2Of2 "Wordlist file does not exist"        
+        return fail "Wordlist file does not exist"
 }
 
 let toCommand (wordlistFileContents : string) =
@@ -25,7 +26,7 @@ let toCommand (wordlistFileContents : string) =
         wordlistFileContents.Split(System.Environment.NewLine.ToCharArray())
         |> List.ofArray
         |> wordlist
-    
+
     Initialize wordlist
 
 let initializeCommander = {
