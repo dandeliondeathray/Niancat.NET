@@ -13,33 +13,36 @@ open Generators
 module DomainTests =
 
     let private unpack (Key s) = s
+    let private normalize s =
+        match Problem s |> normalize with
+        | Problem s' -> s'
 
     let private proveIdempotence f w =
         unpack (key w) =! (unpack >> f) (key w)
 
     [<Property(Arbitrary=[|typeof<NonNullDomainStrings>|])>]
-    let ``Solution.key sorts alphabetically`` word =
+    let ``Domain.key sorts alphabetically`` word =
         proveIdempotence String.sortChars word
 
     [<Property(Arbitrary=[|typeof<NonNullDomainStrings>|])>]
-    let ``Solution.key is uppercase`` word =
+    let ``Domain.key is uppercase`` word =
         proveIdempotence String.toUpper word
 
     [<Property(Arbitrary=[|typeof<NonNullDomainStrings>|])>]
-    let ``Solution.key trims whitespace`` word =
+    let ``Domain.key trims whitespace`` word =
         proveIdempotence String.trim word
 
     [<Property(Arbitrary=[|typeof<NonNullDomainStrings>|])>]
-    let ``Solution.normalize removes all illegal characters`` word =
+    let ``Domain.normalize removes all illegal characters`` word =
         let s = (key >> unpack) word
         Regex.IsMatch(normalize s, "^[A-ZÅÄÖ]*$") =! true
 
     [<Fact>]
-    let ``Solution.normalize handles Swedish characters correctly`` () =
+    let ``Domain.normalize handles Swedish characters correctly`` () =
         normalize "åäöÅÄÖéèÉÈ" =! "ÅÄÖÅÄÖEEEE"
 
     [<Fact>]
-    let ``Solution.hash uses the correct algorithm`` () =
+    let ``Domain.hash uses the correct algorithm`` () =
         let expected = Hash "2831cdcd01d9dce3bc39652bd3ed73bfd901e97341245b06a8a33ce3c45d345c" // echo -n FOOBARBAZtlycken | sha256sum
         hash (Guess "fooBarBaz") (User "Tlycken") =! expected
 
@@ -57,3 +60,17 @@ module DomainTests =
         let wordlist = wordlist ["foo"; "bar"; "foobar"]
 
         isWord wordlist (Guess word) =! shouldMatch
+
+    [<Theory>]
+    [<InlineData("frökapsel", "FRÖ KAP SEL")>]
+    [<InlineData("abcdefghi", "ABC DEF GHI")>]
+    let ``Nine-letter words can be pretty-printed`` input expected =
+        let actual = Problem input |> prettyProblem
+
+        expected =! actual
+
+    [<Theory>]
+    [<InlineData("hejsan", "HEJSAN")>]
+    [<InlineData("håkan bråkan", "HÅKANBRÅKAN")>]
+    let ``Other-length words are just normalized by pretty-printing`` input expected =
+        Problem input |> prettyProblem =! expected

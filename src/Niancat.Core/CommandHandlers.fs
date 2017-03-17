@@ -12,28 +12,24 @@ let handleInitialize wordlist = function
     | TabulaRasa -> ok [Initialized wordlist]
     | _ -> fail AlreadyInitialized
 
-let isValid wordlist (Problem problem) =
-    normalize problem |> String.length = 9
-    &&
-    Map.containsKey (key (P (Problem problem))) wordlist
-
 let setIfValid wordlist problem user =
     if isValid wordlist problem
-    then ok [ProblemSet (user, problem)]
+    then
+        ok [ProblemSet (user, normalize problem)]
     else InvalidProblem problem |> fail
 
-let handleSetProblem word user = function
-    | Started wordlist -> setIfValid wordlist word user 
-    | Set { problem = { letters = prev; solvers = _; date = _ }; wordlist = wordlist; previous = _ } -> 
-        if word <> prev
-        then setIfValid wordlist word user
+let handleSetProblem problem user = function
+    | Started wordlist -> setIfValid wordlist problem user
+    | Set { problem = { letters = prev; solvers = _; date = _ }; wordlist = wordlist; previous = _ } ->
+        if not <| sameProblem prev problem
+        then setIfValid wordlist problem user
         else fail AlreadySet
     | TabulaRasa -> fail Uninitialized
 
 let handleGuess guess user = function
     | Set { problem = { letters = letters; solvers = _; date = _ }; wordlist = wordlist; previous = _ } ->
         if key (P letters) = key (G guess)
-        then 
+        then
             if isWord wordlist guess
             then ok [Solved (user, hash guess user)]
             else fail (IncorrectGuess guess)

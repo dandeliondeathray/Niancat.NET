@@ -6,7 +6,7 @@ module String =
 
     let asChars (s : string) = s.ToCharArray() |> List.ofArray
 
-    let ofChars (cs : char seq) = String.collect (sprintf "%c") ""
+    let ofChars<'a> = Seq.map (sprintf "%c") >> String.concat ""
 
     let toUpper (s : string) = s.ToUpper()
 
