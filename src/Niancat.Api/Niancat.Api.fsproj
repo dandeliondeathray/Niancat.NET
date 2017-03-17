@@ -79,6 +79,7 @@
     <Compile Include="CommandHandlers.fs" />
     <Compile Include="Commanders\Initialize.fs" />
     <Compile Include="Commanders\SetProblem.fs" />
+    <Compile Include="Commanders\Guess.fs" />
     <Compile Include="CommandApi.fs" />
     <Compile Include="JsonFormatters.fs" />
     <Compile Include="QueryApi.fs" />

@@ -38,8 +38,8 @@ let handleGuess guess user = function
 
 let execute = function
     | Initialize wordlist -> handleInitialize wordlist
-    | SetProblem (word, user) -> handleSetProblem word user
-    | Guess (word, user) -> handleGuess word user
+    | SetProblem (problem, user) -> handleSetProblem problem user
+    | MakeGuess (guess, user) -> handleGuess guess user
 
 let evolve command state =
     match execute command state with
