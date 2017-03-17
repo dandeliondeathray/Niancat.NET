@@ -34,5 +34,5 @@ let private withJsonMimeType v = (OK v >=> setMimeType "application/json")
 
 let asyncNone _ = async.Return None
 let problemAsJson = function
-    | Some (Problem w) -> (jstr w |> withJsonMimeType)
+    | Some p -> p |> prettyProblem |> jstr |> withJsonMimeType
     | _ -> asyncNone

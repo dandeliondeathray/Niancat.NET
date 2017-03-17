@@ -25,8 +25,8 @@ let commandApiHandler eventStore eventsStream (context : HttpContext) = async {
     match response with
     | Success (state, events) ->
         return! OK "" context
-    | Failure err -> 
-        return! BAD_REQUEST err.Message context
+    | Failure err ->
+        return! (BAD_REQUEST (jstr err.Message) >=> setMimeType "application/json") context
 }
 
 let queryApiHandler queries =
