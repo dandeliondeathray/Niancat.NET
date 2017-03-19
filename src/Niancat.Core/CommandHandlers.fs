@@ -32,7 +32,7 @@ let handleGuess guess user = function
         then
             if isWord wordlist guess
             then ok [Solved (user, hash guess user)]
-            else fail (IncorrectGuess guess)
+            else ok [IncorrectGuess (user, guess)]
         else fail (InvalidGuess (guess, letters))
     | _ -> fail NoProblemSet
 

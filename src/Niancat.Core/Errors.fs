@@ -8,7 +8,6 @@ type Error =
 | AlreadySet
 | InvalidProblem of Problem
 | InvalidGuess of Guess * Problem
-| IncorrectGuess of Guess
 | NoProblemSet
 
 let toErrorString = function
@@ -18,5 +17,4 @@ let toErrorString = function
 | InvalidProblem p -> p |> Domain.prettyProblem |> sprintf "%s är inte en giltig nia."
 | InvalidGuess (_, problem) ->
     sprintf "Din gissning matchar inte dagens nian (%s)." (Domain.prettyProblem problem)
-| IncorrectGuess (Guess guess) -> sprintf "%s är inte rätt lösning." guess
 | NoProblemSet -> "Dagens nian är inte satt än!"
