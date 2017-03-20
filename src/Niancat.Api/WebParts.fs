@@ -6,11 +6,17 @@ open Suave.Operators
 open Suave.Successful
 open Suave.RequestErrors
 open Suave.Writers
+open Suave.WebSocket
+open Suave.Sockets
+open Suave.Sockets.Control
 
 open Niancat.Api.CommandApi
 open Niancat.Api.QueryApi
 open Niancat.Api.JsonFormatters
 open Niancat.Api.CommandHandlers
+
+open Niancat.Core.Events
+
 open Niancat.Persistence.Queries
 open Niancat.Persistence.InMemory.EventStore
 
@@ -35,6 +41,20 @@ let queryApiHandler queries =
         path "/problem" >=> handleQueryRequest queries.problem.getCurrent problemAsJson
     ]
 
+let publishEventsOnWebsockets (eventsStream : Control.Event<Event list>) (ws : WebSocket) cx = socket {
+    while true do
+        let! events =
+            Control.Async.AwaitEvent(eventsStream.Publish)
+            |> Suave.Sockets.SocketOp.ofAsync
+
+        for event in events do
+            let eventData =
+                event |> eventAsJson |> string |> System.Text.Encoding.UTF8.GetBytes |> ByteSegment
+
+            do! ws.send Text eventData true
+}
+
+
 let niancat eventStore eventsStream =
     choose [
         path "/" >=> choose [
@@ -46,5 +66,7 @@ let niancat eventStore eventsStream =
             METHOD_NOT_ALLOWED ""
         ]
         GET >=> queryApiHandler inMemoryQueries
+        path "/events" >=>
+            handShake (publishEventsOnWebsockets eventsStream)
         NOT_FOUND ""
     ]

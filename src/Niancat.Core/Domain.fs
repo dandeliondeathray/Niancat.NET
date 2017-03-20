@@ -67,3 +67,5 @@ let prettyProblem (Problem word) =
     then
         word' |> String.asChars |> Seq.inChunksOf 3 |> Seq.map String.ofChars |> String.concat " "
     else word'
+
+let prettyGuess (Guess guess) = _normalize guess

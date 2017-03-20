@@ -5,6 +5,7 @@ open Suave.Successful
 open Suave.Writers
 
 open Niancat.Core.Domain
+open Niancat.Core.Events
 
 open Niancat.Utilities
 open Niancat.Utilities.Errors
@@ -24,7 +25,7 @@ module DSL =
         objs |> List.iter a.Add
         a
 
-    let inline (!>) (x:^a) : ^b = ((^a or ^b) : (static member op_Implicit : ^a -> ^b) x) 
+    let inline (!>) (x:^a) : ^b = ((^a or ^b) : (static member op_Implicit : ^a -> ^b) x)
 
     let jtoken (x : string) = JToken.op_Implicit(x)
 
@@ -36,3 +37,32 @@ let asyncNone _ = async.Return None
 let problemAsJson = function
     | Some p -> p |> prettyProblem |> jstr |> withJsonMimeType
     | _ -> asyncNone
+
+let eventAsJson = function
+| Initialized wordlist ->
+    jobj [
+        "event" .= "initialized"
+    ]
+| ProblemSet (User user, problem) ->
+    jobj [
+        "event" .= "problem-set"
+        "data" .= jobj [
+            "problem" .= prettyProblem problem
+        ]
+    ]
+| IncorrectGuess (User user, guess) ->
+    jobj [
+        "event" .= "incorrect-guess"
+        "data" .= jobj [
+            "user" .= user
+            "guess" .= prettyGuess guess
+        ]
+    ]
+| Solved (User user, Hash hash) ->
+    jobj [
+        "event" .= "problem-solved"
+        "data" .= jobj [
+            "user" .= user
+            "hash" .= hash
+        ]
+    ]

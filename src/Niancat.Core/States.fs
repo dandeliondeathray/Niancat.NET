@@ -34,10 +34,10 @@ let nextSetData setData word =
 
 let solved setData user =
     { setData with
-        problem = 
+        problem =
         { setData.problem with
             solvers = user :: setData.problem.solvers
-        }        
+        }
     }
 
 type ApplicationState =
@@ -51,4 +51,4 @@ let apply state event =
     | Started wordlist, ProblemSet (user, word) -> newSetData wordlist word |> Set
     | Set data, ProblemSet (user, word) -> nextSetData data word |> Set
     | Set data, Solved (user, hash) -> solved data user |> Set
-    | _ -> failwith "todo event handling"
+    | Set data, IncorrectGuess (user, guess) -> Set data
