@@ -18,3 +18,4 @@ nuget Newtonsoft.Json
 nuget NEventStore
 
 nuget FSharp.Data
+nuget FSharp.Core 4.0.0.1
