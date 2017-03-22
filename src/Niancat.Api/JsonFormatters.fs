@@ -66,3 +66,10 @@ let eventAsJson = function
             "hash" .= hash
         ]
     ]
+| AlreadySolved (User user) ->
+    jobj [
+        "event" .= "problem-solved-again"
+        "data" .= jobj [
+            "user" .= user
+        ]
+    ]

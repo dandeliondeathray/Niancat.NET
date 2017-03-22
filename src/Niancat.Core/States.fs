@@ -5,7 +5,7 @@ open Events
 
 type ProblemData = {
     letters : Problem
-    solvers : User list
+    solvers : (User * Hash) list
     date : System.DateTime
 }
 
@@ -32,11 +32,11 @@ let nextSetData setData word =
         previous = setData.problem :: setData.previous
     }
 
-let solved setData user =
+let solved setData user hash =
     { setData with
         problem =
         { setData.problem with
-            solvers = user :: setData.problem.solvers
+            solvers = (user, hash) :: setData.problem.solvers
         }
     }
 
@@ -50,5 +50,6 @@ let apply state event =
     | TabulaRasa, Initialized wordlist -> Started wordlist
     | Started wordlist, ProblemSet (user, word) -> newSetData wordlist word |> Set
     | Set data, ProblemSet (user, word) -> nextSetData data word |> Set
-    | Set data, Solved (user, hash) -> solved data user |> Set
+    | Set data, Solved (user, hash) -> solved data user hash |> Set
     | Set data, IncorrectGuess (user, guess) -> Set data
+    | Set data, AlreadySolved user -> Set data

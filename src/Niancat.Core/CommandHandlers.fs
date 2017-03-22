@@ -27,11 +27,15 @@ let handleSetProblem problem user = function
     | TabulaRasa -> fail Uninitialized
 
 let handleGuess guess user = function
-    | Set { problem = { letters = letters; solvers = _; date = _ }; wordlist = wordlist; previous = _ } ->
+    | Set { problem = { letters = letters; solvers = solvers; date = _ }; wordlist = wordlist; previous = _ } ->
         if key (P letters) = key (G guess)
         then
             if isWord wordlist guess
-            then ok [Solved (user, hash guess user)]
+            then
+                let h = hash guess user
+                if solvers |> List.contains (user, h)
+                then ok [AlreadySolved user]
+                else ok [Solved (user, h)]
             else ok [IncorrectGuess (user, guess)]
         else fail (InvalidGuess (guess, letters))
     | _ -> fail NoProblemSet
