@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>5aa3ec4f-d533-44af-b9b2-7fa2c012a92e</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Niancat.Api</RootNamespace>
+    <AssemblyName>Niancat.Api</AssemblyName>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Name>Niancat.Api</Name>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <Tailcalls>false</Tailcalls>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <DocumentationFile>bin\$(Configuration)\$(AssemblyName).XML</DocumentationFile>
+    <StartArguments>..\..\saol14.txt</StartArguments>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <Tailcalls>true</Tailcalls>
+    <OutputPath>bin\$(Configuration)\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <WarningLevel>3</WarningLevel>
+    <DocumentationFile>bin\$(Configuration)\$(AssemblyName).XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <MinimumVisualStudioVersion Condition="'$(MinimumVisualStudioVersion)' == ''">11</MinimumVisualStudioVersion>
+  </PropertyGroup>
+  <Choose>
+    <When Condition="'$(VisualStudioVersion)' == '11.0'">
+      <PropertyGroup Condition="Exists('$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets')">
+        <FSharpTargetsPath>$(MSBuildExtensionsPath32)\..\Microsoft SDKs\F#\3.0\Framework\v4.0\Microsoft.FSharp.Targets</FSharpTargetsPath>
+      </PropertyGroup>
+    </When>
+    <Otherwise>
+      <PropertyGroup Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.FSharp.Targets')">
+        <FSharpTargetsPath>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\FSharp\Microsoft.FSharp.Targets</FSharpTargetsPath>
+      </PropertyGroup>
+    </Otherwise>
+  </Choose>
+  <Import Project="$(FSharpTargetsPath)" />
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.fs" />
+    <Compile Include="JsonFormatters.fs" />
+    <Compile Include="RequestParsers.fs" />
+    <Compile Include="CommandApi.fs" />
+    <Compile Include="QueryApi.fs" />
+    <Compile Include="WebParts.fs" />
+    <Compile Include="Server.fs" />
+    <Content Include="packages.config" />
+    <None Include="any\netstandard1.6\FSharp.Core.sigdata" />
+    <None Include="any\netstandard1.6\FSharp.Core.optdata" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="FSharp.Core">
+      <HintPath>..\packages\FSharp.Core.4.1.12\lib\net45\FSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FSharp.Data">
+      <HintPath>..\packages\FSharp.Data.2.3.3\lib\net40\FSharp.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Suave">
+      <HintPath>..\packages\Suave.2.1.0\lib\net40\Suave.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.ValueTuple">
+      <HintPath>..\packages\System.ValueTuple.4.3.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <ProjectReference Include="..\Niancat.Application\Niancat.Application.fsproj">
+      <Name>Niancat.Application</Name>
+      <Project>{fa4c94de-8d96-4b46-8bc5-c104319629c6}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Niancat.Core\Niancat.Core.fsproj">
+      <Name>Niancat.Core</Name>
+      <Project>{b1a6e095-bef9-44e9-bacb-abf21f30e2d9}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Niancat.Persistence.InMemory\Niancat.Persistence.InMemory.fsproj">
+      <Name>Niancat.Persistence.InMemory</Name>
+      <Project>{b6ef1aed-3a66-4a19-b7ee-d62aa4179aef}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Niancat.Persistence\Niancat.Persistence.fsproj">
+      <Name>Niancat.Persistence</Name>
+      <Project>{509bdb05-efea-4c8e-b4d8-cd21a0192d30}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Niancat.Utilities\Niancat.Utilities.fsproj">
+      <Name>Niancat.Utilities</Name>
+      <Project>{a67e9e6f-8101-454f-b269-3497a46da113}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
